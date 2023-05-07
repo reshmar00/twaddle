@@ -1,0 +1,1 @@
+This private GitHub repository contains a collection of my ongoing side projects. These are personal projects that I work on in my free time to explore new technologies, experiment with different programming techniques, and build interesting and useful applications.
