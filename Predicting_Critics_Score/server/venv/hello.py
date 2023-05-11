@@ -1,15 +1,15 @@
 from flask import Flask
 from markupsafe import escape
 from flask import request
+from flask import render_template
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    return 'index'
+    return render_template('main_page.html')
 
 
-@app.route('/login')
-def login():
-    return 'login'
+if __name__ == '__main__':
+    app.run()

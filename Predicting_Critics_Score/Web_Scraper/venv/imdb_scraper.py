@@ -2,6 +2,15 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import mysql.connector
 from mysql.connector import errorcode
+import time
+
+# Setting the maximum no. of requests and the timeframe
+max_requests = 10
+timeframe_seconds = 60
+
+# Initializing counters
+request_count = 0
+start_time = time.time()
 
 config = {
   'user': 'rotten_scraper01',
@@ -23,82 +32,92 @@ imdb_movie_names = []
 imdb_movie_scores = []
 imdb_movie_synopses = []
 
-for list_url in list_urls:
-    # Fetch the HTML content from the URL
-    list_response = urlopen(list_url)
-    list_html_content = list_response.read()
+# Main scraping loop
+while request_count < max_requests and time.time() - start_time < timeframe_seconds:
+    for list_url in list_urls:
+        # Fetch the HTML content from the URL
+        list_response = urlopen(list_url)
+        list_html_content = list_response.read()
 
-    # Parse the HTML content with BeautifulSoup
-    list_soup = BeautifulSoup(list_html_content, 'html.parser')
+        # Parse the HTML content with BeautifulSoup
+        list_soup = BeautifulSoup(list_html_content, 'html.parser')
 
-    # Find all 'h3' tags with class 'lister-item-header'
-    h3_tags = list_soup.find_all('h3', class_='lister-item-header')
+        # Find all 'h3' tags with class 'lister-item-header'
+        h3_tags = list_soup.find_all('h3', class_='lister-item-header')
 
-    # ***************************** IMDB ************************** #
+        # ***************************** IMDB ************************** #
 
-    # Find all 'metascore' tags
-    metascore_tags = list_soup.find_all('div', class_='inline-block ratings-metascore')
+        # Find all 'metascore' tags
+        metascore_tags = list_soup.find_all('div', class_='inline-block ratings-metascore')
 
-    meta_movie_title = ""
-    metascore = ""
-    meta_synopsis = ""
+        meta_movie_title = ""
+        metascore = ""
+        meta_synopsis = ""
 
-    # Loop through each 'h3' tag and extract the movie title
-    for h3 in h3_tags:
-        a_tag = h3.find('a')  # Get the first 'a' tag within the 'h3'
-        if a_tag:  # Check if an 'a' tag was found
-            if not metascore_tags:  # If it doesn't have a metascore, skip it
-                print("skipping")
-                continue
-            # Extract the text within the 'a' tag
-            # and remove any leading/trailing whitespace
-            else:
-                # Get the movie name
-                meta_movie_title = a_tag.text.strip()
-                # imdb_movie_names.append(movie_title)  # Append the title to the list of movie names
-
-                for metascore_obj in metascore_tags:
-                    meta_tag = metascore_obj.find('span')
-                    if meta_tag:
-                        # Get the movie's metascore (critic's score)
-                        metascore = meta_tag.text.strip()
-                        # imdb_movie_scores.append(score)
-
-                synopsis_tag = h3.find_next_sibling('p', class_='text-muted', string=True)
-                if synopsis_tag:
-                    # Get the movie's synopsis
-                    meta_synopsis = synopsis_tag.text.strip()
-                    # imdb_movie_synopses.append(synopsis_tag.text.strip())
-
-                else:
+        # Loop through each 'h3' tag and extract the movie title
+        for h3 in h3_tags:
+            a_tag = h3.find('a')  # Get the first 'a' tag within the 'h3'
+            if a_tag:  # Check if an 'a' tag was found
+                if not metascore_tags:  # If it doesn't have a metascore, skip it
+                    print("skipping")
                     continue
-
-                try:
-                    cnx = mysql.connector.connect(**config)
-                    cursor = cnx.cursor()
-
-                    add_movie = ("INSERT INTO imdb_info "
-                                 "(movie_title, metascore, description) "
-                                 "VALUES (%s, %s, %s)")
-                    movie_data = (meta_movie_title, metascore, meta_synopsis)
-
-                    # Insert new movie
-                    cursor.execute(add_movie, movie_data)
-
-                    # Make sure data is committed to the database
-                    cnx.commit()
-
-                except mysql.connector.Error as err:
-                    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                        print("Something is wrong with your user name or password")
-                    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                        print("Database does not exist")
-                    else:
-                        print(err)
-
+                # Extract the text within the 'a' tag
+                # and remove any leading/trailing whitespace
                 else:
-                    cursor.close()
-                    cnx.close()
+                    # Get the movie name
+                    meta_movie_title = a_tag.text.strip()
+                    # imdb_movie_names.append(movie_title)  # Append the title to the list of movie names
+
+                    for metascore_obj in metascore_tags:
+                        meta_tag = metascore_obj.find('span')
+                        if meta_tag:
+                            # Get the movie's metascore (critic's score)
+                            metascore = meta_tag.text.strip()
+                            # imdb_movie_scores.append(score)
+
+                    synopsis_tag = h3.find_next_sibling('p', class_='text-muted', string=True)
+                    if synopsis_tag:
+                        # Get the movie's synopsis
+                        meta_synopsis = synopsis_tag.text.strip()
+                        # imdb_movie_synopses.append(synopsis_tag.text.strip())
+
+                    else:
+                        continue
+
+                    # Increment the request count
+                    request_count += 1
+
+                    # Introduce a delay between requests
+                    time.sleep(30)
+
+                    try:
+                        cnx = mysql.connector.connect(**config)
+                        cursor = cnx.cursor()
+
+                        add_movie = ("INSERT INTO imdb_info "
+                                     "(movie_title, metascore, description) "
+                                     "VALUES (%s, %s, %s)")
+                        movie_data = (meta_movie_title, metascore, meta_synopsis)
+
+                        # Insert new movie
+                        cursor.execute(add_movie, movie_data)
+
+                        # Make sure data is committed to the database
+                        cnx.commit()
+
+                        print(f"{movie_title} data saved")
+
+                    except mysql.connector.Error as err:
+                        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                            print("Something is wrong with your user name or password")
+                        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                            print("Database does not exist")
+                        else:
+                            print(err)
+
+                    else:
+                        cursor.close()
+                        cnx.close()
 
 
 print("imdb part done")
