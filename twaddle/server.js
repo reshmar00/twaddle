@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
-const fs = require('fs');
-const path = require('path');
+const multer = require('multer');
+
 
 // Use CORS middleware with dynamic origin
 app.use((req, res, next) => {
@@ -66,57 +66,31 @@ app.post('/send-email', (req, res) => {
 
 /*********** Code to handle file uploads ***********/
 
-
-// Middleware for handling file uploads
-const fileUpload = require('express-fileupload');
-app.use(fileUpload());
-
-// Define a route for uploading text files
-app.post('/upload', (req, res) => {
-    console.log('Received a POST request at /upload');
-    if (!req.files || !req.files.textFile) {
-        console.log('No file uploaded');
-        return res.status(400).json({ error: 'No file uploaded' });
+// Middleware to handle file uploads using Multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Set the destination folder where files will be stored
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname); // Use the original file name
     }
-
-    const textFile = req.files.textFile;
-
-    console.log('No file uploaded error dodged');
-
-    // Ensure it's a text file
-    if (textFile.mimetype !== 'text/plain') {
-        return res.status(400).json({ error: 'Only text files (.txt) are allowed' });
-    }
-
-    console.log('Ensured it is a text file');
-
-    // Save the uploaded file using a Promise
-    const moveFile = () => {
-        return new Promise((resolve, reject) => {
-            const filePath = __dirname + '/uploads/' + textFile.name;
-            textFile.mv(filePath, (err) => {
-                if (err) {
-                    console.error('Error uploading file:', err);
-                    reject(err);
-                } else {
-                    console.log('File moved successfully');
-                    resolve();
-                }
-            });
-        });
-    };
-
-    moveFile()
-        .then(() => {
-            console.log('If I am here, the file is successfully uploaded');
-            res.status(200).json({ message: 'File uploaded successfully' });
-        })
-        .catch((error) => {
-            console.error('Error uploading file:', error);
-            res.status(500).json({ error: 'Error uploading file' });
-        });
 });
 
+const upload = multer({ storage: storage });
+
+// Define a route for handling file uploads
+app.post('/upload', upload.single('uploadTextFile'), (req, res) => {
+    console.log('Received POST request at /upload');
+
+    // Check if a file was uploaded successfully
+    if (req.file) {
+        console.log('File uploaded:', req.file);
+        res.status(200).json({ message: 'File uploaded successfully' });
+    } else {
+        console.error('No file uploaded');
+        res.status(400).json({ error: 'No file uploaded' });
+    }
+});
 
 /****************** SERVER START ******************/
 

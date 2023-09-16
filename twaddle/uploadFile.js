@@ -1,44 +1,47 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Get a reference to the form
-    const form = document.getElementById('uploadForm');
-    const fileInput = document.getElementById('textFile');
+    const uploadForm = document.getElementById('uploadForm');
 
+    console.log("got a reference to the form")
     // Add a submit event listener to the form
-    form.addEventListener('submit', function (event) {
+    uploadForm.addEventListener('submit', async function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
 
-        // Get the selected file
-        const textFile = fileInput.files[0];
+        console.log("prevented default")
+        // Get the file input and file
+        const fileInput = uploadForm.querySelector('#uploadTextFile');
+        console.log("got fileInput")
+        const file = fileInput.files[0];
+        console.log("got file[0]")
+        // Data to send to the server as FormData
 
-        if (!textFile) {
-            alert('Please select a file to upload.'); // No file selected, show an alert
-            return;
-        }
-
-        // Create a FormData object to send the file
         const formData = new FormData();
-        formData.append('textFile', textFile);
+        console.log("sending data")
+        formData.append('uploadTextFile', file);
 
-        // Send a POST request to the server using fetch
-        fetch('http://localhost:3000/upload', {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-
-                // Check if the response indicates success
-                if (data.message === 'File uploaded successfully') {
-                    alert('File Uploaded!'); // Show success message
-                    form.reset(); // Reset the form, clearing the file input
-                } else {
-                    alert('There was an error uploading the file'); // Show error message
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                alert('There was an error uploading the file'); // Show error message
+        console.log("appending data")
+        try {
+            console.log("entering try block")
+            const response = await fetch('http://localhost:3000/upload', {
+                method: 'POST',
+                body: formData,
             });
+
+            if (response.ok) {
+                // Show a success message and clear the form
+                alert('File Uploaded!');
+                console.log("file uploaded")
+                uploadForm.reset(); // Clear the form
+            } else {
+                // Show an error message
+                alert('Error uploading file');
+                console.log("error")
+                console.error(error);
+            }
+        } catch (error) {
+            console.error(error);
+            // Show an error message
+            alert('Error uploading file');
+        }
     });
 });
