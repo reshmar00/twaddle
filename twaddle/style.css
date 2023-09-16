@@ -159,9 +159,7 @@ h3{
     flex-direction: column;
     text-align: left;
     background-color: rgba(255, 255, 255, 0.6); /* Add a semi-transparent background */
-    padding: 1em;
     border-radius: 0.5em;
-    width: 40%;
 }
 
 /* Style the form elements */
@@ -181,7 +179,7 @@ h3{
 
 /* Style the text areas to make them longer */
 textarea {
-    width: 192%; /* Set the width to 100% to expand across the container */
+    width: 25vw; /* Set the width to 100% to expand across the container */
     height: 20vh; /* Adjust the height as needed */
 }
 
@@ -189,7 +187,7 @@ textarea {
 input[type="email"],
 input[type="password"],
 input[type="text"] {
-    width: 192%; /* Set the width to 100% to expand across the container */
+    width: 25vw; /* Set the width to 100% to expand across the container */
     /* Adjust the height, padding, or other properties as needed */
 }
 

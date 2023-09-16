@@ -26,7 +26,19 @@
         <h1>Welcome to Twaddle! The social media platform for those sick of social media platforms!</h1><br>
         <div class="content-container">
             <div class="upload-download-database">
-                <p>Here are SQL queries + options to upload and download files! </p>
+                <div>
+                    <h3>Upload Text File</h3>
+                    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+                        <input type="file" id="textFile" accept=".txt" required>
+                        <input type="submit" value="Upload">
+                    </form>
+                </div>
+
+                <div>
+                    <h3>Download Text File</h3>
+                    <a href="/download" download>Download Text File</a>
+                </div>
+
             </div>
             <div class="email">
                 <h3>Email Sender</h3><br><br>
@@ -45,7 +57,7 @@
         </div>
     </div>
 </div>
-<!--<script src="script.js"></script>-->
+<script src="uploadFile.js"></script>
 <script src="sendEmail.js"></script>
 </body>
 </html>
