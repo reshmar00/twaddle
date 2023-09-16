@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 const fs = require('fs');
+const path = require('path');
 
 // Use CORS middleware with dynamic origin
 app.use((req, res, next) => {
@@ -114,23 +115,6 @@ app.post('/upload', (req, res) => {
             console.error('Error uploading file:', error);
             res.status(500).json({ error: 'Error uploading file' });
         });
-});
-
-// Define a route for downloading the uploaded text file
-app.get('/download', (req, res) => {
-    const filePath = __dirname + '/uploads/your_uploaded_file.txt'; // Replace with your actual file path
-    const fileName = 'your_uploaded_file.txt'; // Replace with your actual file name
-
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error reading file' });
-        }
-
-        // Set the response headers for file download
-        res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
-        res.setHeader('Content-type', 'text/plain');
-        res.send(data);
-    });
 });
 
 

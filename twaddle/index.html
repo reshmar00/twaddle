@@ -26,19 +26,13 @@
         <h1>Welcome to Twaddle! The social media platform for those sick of social media platforms!</h1><br>
         <div class="content-container">
             <div class="upload-download-database">
-                <div>
+                <div class ="uploadFile">
                     <h3>Upload Text File</h3>
                     <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
-                        <input type="file" id="textFile" accept=".txt" required>
+                        <input type="file" id="uploadTextFile" accept=".txt" required>
                         <input type="submit" value="Upload">
                     </form>
                 </div>
-
-                <div>
-                    <h3>Download Text File</h3>
-                    <a href="/download" download>Download Text File</a>
-                </div>
-
             </div>
             <div class="email">
                 <h3>Email Sender</h3><br><br>
