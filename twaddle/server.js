@@ -6,6 +6,8 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 const multer = require('multer');
+const EventEmitter = require('events');
+const eventEmitter = new EventEmitter();
 
 
 // Use CORS middleware with dynamic origin
@@ -19,7 +21,7 @@ app.use((req, res, next) => {
                 callback(new Error('Not allowed by CORS'));
             }
         },
-        methods: 'POST', // You can customize the HTTP methods you want to allow
+        methods: 'POST',
     })(req, res, next);
 });
 
@@ -29,7 +31,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 // Initialize Mailgun
-const formData = require('form-data');
 const Mailgun = require('mailgun-js');
 const mailgun = new Mailgun({
     apiKey: 'b4249a24d01dd02a88b4040d0ea2a707-413e373c-810df927',
@@ -44,20 +45,20 @@ app.post('/send-email', (req, res) => {
 
     const data = {
         from: "Excited User <mailgun@sandbox62100d4345c548aaa13eff2b42166cc1.mailgun.org>",
-        to: ["shielabrof2004@yahoo.com"], // Update the recipient email address
+        to: ["shielabrof2004@yahoo.com"],
         subject: subject,
         text: message,
         html: `<h1>${message}</h1>`, // Use the message as HTML content
     };
 
-    console.log('Sending email...'); // Add this line to check if the email sending process is starting
+    console.log('Sending email...');
 
     mailgun.messages().send(data, (error, body) => {
         if (error) {
             console.error('Error sending email:', error);
             res.status(500).json({ error: 'Error sending email' });
         } else {
-            console.log('Email sent:', body); // Add this line to check if the email was successfully sent
+            console.log('Email sent:', body);
             res.status(200).json({ message: 'Email sent successfully' });
         }
     });
@@ -90,6 +91,24 @@ app.post('/upload', upload.single('uploadTextFile'), (req, res) => {
         console.error('No file uploaded');
         res.status(400).json({ error: 'No file uploaded' });
     }
+});
+
+/***** Code fot using Events to play audio (emitting it) ******/
+
+// Define a route for handling the play-pause event
+app.post('/play-pause', (req, res) => {
+    console.log('Received POST request at /play-pause');
+
+    // Emit the play-pause event
+    eventEmitter.emit('play-pause');
+
+    res.status(200).json({ message: 'Play-pause event emitted' });
+});
+
+// Listen for the play-pause event and handle it
+eventEmitter.on('play-pause', () => {
+    // Handle the play-pause event here
+    console.log('Play-pause event received on the server');
 });
 
 /****************** SERVER START ******************/

@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error(error);
                 // Show an error message
-                alert('There was an error sending the email');
+                alert('Error!');
             });
     });
 });

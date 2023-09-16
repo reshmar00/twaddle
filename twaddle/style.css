@@ -42,7 +42,7 @@ h3{
 .menu h2 {
     margin: 0;
     padding-right: 3em;
-    transition: transform 0.3s ease; /* Add a transition for the zoom effect */
+    transition: transform 0.3s ease; /* Transition for zoom effect */
 }
 
 /* Style the anchor (link) within the menu items */
@@ -77,8 +77,8 @@ h3{
 /* Hover effect for the button */
 .rounded-button:hover {
     background-color: #333333;
-    box-shadow: 0 2em 3em rgba(0, 0, 0, 0.1); /* Slight shadow effect on hover */
-    transform: scale(1.05); /* Slight scale-up effect on hover */
+    box-shadow: 0 2em 3em rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
 }
 
 /* Style the logo container */
@@ -96,7 +96,7 @@ h3{
 
 /* Hover effect for the logo image */
 .logo-image:hover {
-    transform: scale(1.1); /* Zoom in effect on hover */
+    transform: scale(1.1);
 }
 
 /* Style the logo link */
@@ -158,7 +158,7 @@ h3{
     align-items: flex-start;
     flex-direction: column;
     text-align: left;
-    background-color: rgba(255, 255, 255, 0.6); /* Add a semi-transparent background */
+    background-color: rgba(255, 255, 255, 0.6);
     border-radius: 0.5em;
 }
 
@@ -179,16 +179,15 @@ h3{
 
 /* Style the text areas to make them longer */
 textarea {
-    width: 25vw; /* Set the width to 100% to expand across the container */
-    height: 20vh; /* Adjust the height as needed */
+    width: 25vw;
+    height: 20vh;
 }
 
 /* Style the input elements to make them longer */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
-    width: 25vw; /* Set the width to 100% to expand across the container */
-    /* Adjust the height, padding, or other properties as needed */
+    width: 25vw;
 }
 
 /* Style the events section */
@@ -198,6 +197,29 @@ input[type="text"] {
     padding: 1em;
 }
 
+/* Style the play button container */
+.play-button-container {
+    display: inline-block;
+    padding: 1em;
+}
+
+/* Style the play button */
+.play-button {
+    cursor: pointer;
+}
+
+/* Style the image inside the play button */
+.play-button img {
+    width: 3em;
+    height: 3em;
+    vertical-align: middle;
+}
+
+/* Change cursor to pointer on hover */
+.play-button:hover {
+    cursor: pointer;
+}
+
 /****************** Hover effects ******************/
 
 /* Style the "upload-download-database" div */
@@ -205,15 +227,15 @@ input[type="text"] {
 .email,
 .events {
     padding: 1em;
-    border-radius: 1em; /* Add rounded corners */
-    transition: transform 0.3s ease; /* Add a transition for the zoom effect */
+    border-radius: 1em;
+    transition: transform 0.3s ease;
 }
 
 /* Hover effect for the divs */
 .upload-download-database:hover,
 .email:hover,
 .events:hover {
-    transform: scale(1.1); /* Zoom in effect on hover */
+    transform: scale(1.1); /* Zoom-in effect on hover */
 }
 
 /****************** RESPONSIVE DESIGN ******************/
@@ -222,21 +244,21 @@ input[type="text"] {
 /* Large screens (1920px) */
 @media (min-width: 1920px) {
     .background-image {
-        background-image: url('res/twaddle-bg-1.jpg'); /* Specify the background image for large screens */
+        background-image: url('res/twaddle-bg-1.jpg');
     }
 }
 
 /* Medium screens (960px) */
 @media (max-width: 1919px) and (min-width: 960px) {
     .background-image {
-        background-image: url('res/twaddle-bg-2.jpg'); /* Specify the background image for medium screens */
+        background-image: url('res/twaddle-bg-2.jpg');
     }
 }
 
 /* Small screens (480px) */
 @media (max-width: 959px) {
     .background-image {
-        background-image: url('res/twaddle-bg-3.jpg'); /* Specify the background image for small screens */
+        background-image: url('res/twaddle-bg-3.jpg');
     }
 }
 
@@ -269,7 +291,7 @@ input[type="text"] {
     .content-container {
         display: flex;
         justify-content: space-between;
-        align-items: center; /* Vertically center the child divs */
+        align-items: center;
         margin-top: 1em;
         padding-left: 1em;
         padding-right: 1em;
@@ -282,7 +304,7 @@ input[type="text"] {
         align-items: flex-start;
         flex-direction: column;
         text-align: left;
-        background-color: rgba(255, 255, 255, 0.6); /* Add a semi-transparent background */
+        background-color: rgba(255, 255, 255, 0.6);
         border-radius: 0.5em;
         width: 100%;
     }
@@ -294,15 +316,14 @@ input[type="text"] {
     }
 
     textarea {
-        width: 100%; /* Set the width to 100% to expand across the container */
-        height: 7vh; /* Adjust the height as needed */
+        width: 100%;
+        height: 7vh;
     }
 
     /* Style the input elements to make them longer */
     input[type="email"],
     input[type="password"],
     input[type="text"] {
-        width: 100%; /* Set the width to 100% to expand across the container */
-        /* Adjust the height, padding, or other properties as needed */
+        width: 100%;
     }
 }
