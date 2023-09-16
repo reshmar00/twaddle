@@ -1,0 +1,278 @@
+
+/******************* HTML TAGS ******************/
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body,p {
+    font-family: "Helvetica Neue", sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    color: #333;
+}
+
+h1{
+    margin: 0.5em;
+    padding: 0.5em;
+}
+
+h3{
+    margin: 0.5em;
+    padding: 0.5em;
+}
+
+/**************** BANNER ***************/
+
+/* Style the banner at the top of the page */
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    color: #333;
+    padding: 1em 2em;
+}
+
+/* Style the menu */
+.menu {
+    display: flex;
+}
+
+/* Style the menu items (h2 elements) */
+.menu h2 {
+    margin: 0;
+    padding-right: 3em;
+    transition: transform 0.3s ease; /* Add a transition for the zoom effect */
+}
+
+/* Style the anchor (link) within the menu items */
+.menu h2 a {
+    text-decoration: none;
+    color: inherit; /* Inherit the color from the parent element */
+}
+
+/* Hover effect for the menu items */
+.menu h2:hover {
+    transform: scale(1.1); /* Zoom in effect on hover */
+}
+
+/* Style the call-to-action (CTA) button container */
+.cta-button {
+    display: flex;
+    align-items: center;
+}
+
+/* Style the rounded button */
+.rounded-button {
+    background-color: #414042;
+    color: #FFC316;
+    border: none;
+    border-radius: 2em;
+    padding: 1em 2em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for the button */
+.rounded-button:hover {
+    background-color: #333333;
+    box-shadow: 0 2em 3em rgba(0, 0, 0, 0.1); /* Slight shadow effect on hover */
+    transform: scale(1.05); /* Slight scale-up effect on hover */
+}
+
+/* Style the logo container */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Style the logo */
+.logo-image {
+    max-height: 3em;
+    vertical-align: middle;
+}
+
+/***************** BODY *****************/
+
+/* Define styles for the container */
+.container {
+    position: relative; /* Required for positioning child elements */
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* Define styles for the background image */
+.background-image {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    position: static;
+    background: url('res/twaddle-bg-1.jpg') no-repeat center center fixed;
+    background-size: 100%;
+    overflow: hidden;
+    max-height: 100vh;
+    padding-left:5em;
+}
+
+/* Style the container for the three divs */
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center the child divs */
+    margin-top: 1em;
+    padding-left: 1em;
+    gap: 10em;
+}
+
+/* Style the upload-download-database section */
+.upload-download-database{
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 0.5em;
+    padding: 1em;
+}
+
+/* Style the "Email Sender" section */
+.email {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.6); /* Add a semi-transparent background */
+    padding: 1em;
+    border-radius: 0.5em;
+    width: 40%;
+}
+
+/* Style the form elements */
+#emailForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 1em;
+    gap: 0.50em;
+}
+
+/* Style the label for message */
+#messageLabel {
+    align-self: flex-start; /* Align the label to the left */
+    margin: 2em;
+}
+
+/* Style the text areas to make them longer */
+textarea {
+    width: 192%; /* Set the width to 100% to expand across the container */
+    height: 20vh; /* Adjust the height as needed */
+}
+
+/* Style the input elements to make them longer */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 192%; /* Set the width to 100% to expand across the container */
+    /* Adjust the height, padding, or other properties as needed */
+}
+
+/* Style the events section */
+.events{
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 0.5em;
+    padding: 1em;
+}
+
+/* Options for different screen sizes */
+/* Large screens (1920px) */
+@media (min-width: 1920px) {
+    .background-image {
+        background-image: url('res/twaddle-bg-1.jpg'); /* Specify the background image for large screens */
+    }
+}
+
+/* Medium screens (960px) */
+@media (max-width: 1919px) and (min-width: 960px) {
+    .background-image {
+        background-image: url('res/twaddle-bg-2.jpg'); /* Specify the background image for medium screens */
+    }
+}
+
+/* Small screens (480px) */
+@media (max-width: 959px) {
+    .background-image {
+        background-image: url('res/twaddle-bg-3.jpg'); /* Specify the background image for small screens */
+    }
+}
+
+/* Show the menu icon on smaller screens */
+@media screen and (max-width: 768px) {
+
+    h1,h3{
+        font-size:1.5em;
+    }
+
+    .background-image{
+        padding:0;
+    }
+    .menu-icon {
+        display: flex;
+    }
+    .actions {
+        display: none;
+    }
+    .menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+    }
+    .menu.show {
+        display: flex;
+    }
+
+    /* Style the container for the three divs */
+    .content-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Vertically center the child divs */
+        margin-top: 1em;
+        padding-left: 1em;
+        padding-right: 1em;
+        gap: 5em;
+        font-size:0.8em;
+    }
+
+    .email {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        text-align: left;
+        background-color: rgba(255, 255, 255, 0.6); /* Add a semi-transparent background */
+        border-radius: 0.5em;
+        width: 100%;
+    }
+
+    #emailForm {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    textarea {
+        width: 100%; /* Set the width to 100% to expand across the container */
+        height: 7vh; /* Adjust the height as needed */
+    }
+
+    /* Style the input elements to make them longer */
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+        width: 100%; /* Set the width to 100% to expand across the container */
+        /* Adjust the height, padding, or other properties as needed */
+    }
+}

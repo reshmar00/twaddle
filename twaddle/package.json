@@ -1,0 +1,24 @@
+{
+  "name": "twaddle",
+  "version": "1.0.0",
+  "description": "spoof of social media sites",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "reshma-raghavan",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "reshmar00"
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mailgun-js": "^0.22.0",
+    "nodemailer": "^6.9.5",
+    "readline-sync": "^1.4.10"
+  }
+}

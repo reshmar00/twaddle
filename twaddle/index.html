@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Twaddle</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="banner">
+    <div class="logo-container">
+        <img src="res/twaddle-logo-long.png" alt="twaddle" class="logo-image">
+    </div>
+    <div class="menu">
+        <h2><a href="#">Why Twaddle?</a></h2>
+        <h2><a href="#">Features</a></h2>
+        <h2><a href="#">Plans and pricing</a></h2>
+    </div>
+    <div class="cta-button">
+        <a href="#" class="rounded-button"><b>TRY IT FREE</b></a>
+    </div>
+</div>
+<div class="container">
+    <div class="background-image">
+        <h1>Welcome to Twaddle! The social media platform for those sick of social media platforms!</h1><br>
+        <div class="content-container">
+            <div class="upload-download-database">
+                <p>Here are SQL queries + options to upload and download files! </p>
+            </div>
+            <div class="email">
+                <h3>Email Sender</h3><br><br>
+                <form id="emailForm" action="/send-email" method="POST">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required><br><br>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required><br><br> <!-- Use type="password" for secure input -->
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" name="subject" required><br><br><br>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" required></textarea><br><br>
+                    <input type="submit" value="Send Email">
+                </form>
+            </div>
+
+            <div class="events">
+                <p>Click here for the twaddle theme music</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+<script src="sendEmailPrompt.js"></script>
+</body>
+</html>
