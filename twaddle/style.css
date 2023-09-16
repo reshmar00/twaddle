@@ -91,6 +91,18 @@ h3{
 .logo-image {
     max-height: 3em;
     vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for the logo image */
+.logo-image:hover {
+    transform: scale(1.1); /* Zoom in effect on hover */
+}
+
+/* Style the logo link */
+.logo-link {
+    text-decoration: none; /* Removes the underline from the link */
+    cursor: pointer;
 }
 
 /***************** BODY *****************/
@@ -187,6 +199,26 @@ input[type="text"] {
     border-radius: 0.5em;
     padding: 1em;
 }
+
+/****************** Hover effects ******************/
+
+/* Style the "upload-download-database" div */
+.upload-download-database,
+.email,
+.events {
+    padding: 1em;
+    border-radius: 1em; /* Add rounded corners */
+    transition: transform 0.3s ease; /* Add a transition for the zoom effect */
+}
+
+/* Hover effect for the divs */
+.upload-download-database:hover,
+.email:hover,
+.events:hover {
+    transform: scale(1.1); /* Zoom in effect on hover */
+}
+
+/****************** RESPONSIVE DESIGN ******************/
 
 /* Options for different screen sizes */
 /* Large screens (1920px) */
