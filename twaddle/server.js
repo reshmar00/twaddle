@@ -33,8 +33,8 @@ app.use(bodyParser.json());
 // Initialize Mailgun
 const Mailgun = require('mailgun-js');
 const mailgun = new Mailgun({
-    apiKey: 'b4249a24d01dd02a88b4040d0ea2a707-413e373c-810df927',
-    domain: 'sandbox62100d4345c548aaa13eff2b42166cc1.mailgun.org',
+    apiKey: '45b8983c2722281ae27152d4517da6f5-4b98b89f-db90d857',
+    domain: 'sandbox9a490dceba364cf8a2e9b1db4d4ad782.mailgun.org',
 });
 
 // Define a route for sending emails
@@ -44,7 +44,7 @@ app.post('/send-email', (req, res) => {
     const { subject, message } = req.body; // Include password if needed for authentication
 
     const data = {
-        from: "Excited User <mailgun@sandbox62100d4345c548aaa13eff2b42166cc1.mailgun.org>",
+        from: "Excited User <mailgun@sandbox9a490dceba364cf8a2e9b1db4d4ad782.mailgun.org>",
         to: ["shielabrof2004@yahoo.com"],
         subject: subject,
         text: message,
@@ -96,7 +96,7 @@ app.post('/upload', upload.single('uploadTextFile'), (req, res) => {
 /***** Code fot using Events to play audio (emitting it) ******/
 
 // Define a route for handling the play-pause event
-app.post('/play-pause', (req, res) => {
+app.post('/play-pause', (req    , res) => {
     console.log('Received POST request at /play-pause');
 
     // Emit the play-pause event
@@ -105,7 +105,7 @@ app.post('/play-pause', (req, res) => {
     res.status(200).json({ message: 'Play-pause event emitted' });
 });
 
-// Listen for the play-pause event and handle it
+//Listen for the play-pause event and handle it
 eventEmitter.on('play-pause', () => {
     // Handle the play-pause event here
     console.log('Play-pause event received on the server');
