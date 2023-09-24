@@ -30,13 +30,6 @@ app.use((req, res, next) => {
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
 
-// Initialize Mailgun
-const Mailgun = require('mailgun-js');
-const mailgun = new Mailgun({
-    apiKey: '45b8983c2722281ae27152d4517da6f5-4b98b89f-db90d857',
-    domain: 'sandbox9a490dceba364cf8a2e9b1db4d4ad782.mailgun.org',
-});
-
 // Define a route for sending emails
 app.post('/send-email', (req, res) => {
     console.log('Received POST request at /send-email'); // Add this line to check if the request is reaching the server
