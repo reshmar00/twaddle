@@ -1,20 +1,24 @@
 
+
 /* Imports */
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const app = express();
-const port = process.env.PORT || 3000;
 const multer = require('multer');
 const EventEmitter = require('events');
+const mailgun = require('mailgun-js');
+
+const app = express();
+const port = process.env.PORT || 3000;
 const eventEmitter = new EventEmitter();
 
+const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN });
 
 // Use CORS middleware with dynamic origin
 app.use((req, res, next) => {
     cors({
         origin: (origin, callback) => {
-            // Check if the origin matches the request's origin or allow all origins with '*'
             if (!origin || origin === req.headers.origin) {
                 callback(null, true);
             } else {
@@ -32,21 +36,21 @@ app.use(bodyParser.json());
 
 // Define a route for sending emails
 app.post('/send-email', (req, res) => {
-    console.log('Received POST request at /send-email'); // Add this line to check if the request is reaching the server
+    console.log('Received POST request at /send-email');
 
-    const { subject, message } = req.body; // Include password if needed for authentication
+    const { to, subject, message } = req.body;
 
     const data = {
-        from: "Excited User <mailgun@sandbox9a490dceba364cf8a2e9b1db4d4ad782.mailgun.org>",
-        to: ["shielabrof2004@yahoo.com"],
+        from: `Excited User <mailgun@${process.env.MAILGUN_DOMAIN}>`,
+        to: to,
         subject: subject,
         text: message,
-        html: `<h1>${message}</h1>`, // Use the message as HTML content
+        html: `<h1>${message}</h1>`,
     };
 
     console.log('Sending email...');
 
-    mailgun.messages().send(data, (error, body) => {
+    mg.messages().send(data, (error, body) => {
         if (error) {
             console.error('Error sending email:', error);
             res.status(500).json({ error: 'Error sending email' });
@@ -57,26 +61,22 @@ app.post('/send-email', (req, res) => {
     });
 });
 
-
 /*********** Code to handle file uploads ***********/
 
-// Middleware to handle file uploads using Multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Set the destination folder where files will be stored
+        cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Use the original file name
+        cb(null, file.originalname);
     }
 });
 
 const upload = multer({ storage: storage });
 
-// Define a route for handling file uploads
 app.post('/upload', upload.single('uploadTextFile'), (req, res) => {
     console.log('Received POST request at /upload');
 
-    // Check if a file was uploaded successfully
     if (req.file) {
         console.log('File uploaded:', req.file);
         res.status(200).json({ message: 'File uploaded successfully' });
@@ -86,28 +86,22 @@ app.post('/upload', upload.single('uploadTextFile'), (req, res) => {
     }
 });
 
-/***** Code fot using Events to play audio (emitting it) ******/
+/***** Code for using Events to play audio (emitting it) ******/
 
-// Define a route for handling the play-pause event
-app.post('/play-pause', (req    , res) => {
+app.post('/play-pause', (req, res) => {
     console.log('Received POST request at /play-pause');
 
-    // Emit the play-pause event
     eventEmitter.emit('play-pause');
 
     res.status(200).json({ message: 'Play-pause event emitted' });
 });
 
-//Listen for the play-pause event and handle it
 eventEmitter.on('play-pause', () => {
-    // Handle the play-pause event here
     console.log('Play-pause event received on the server');
 });
 
 /****************** SERVER START ******************/
 
-// Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-

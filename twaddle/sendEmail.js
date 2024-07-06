@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault(); // Prevent the default form submission behavior
 
         // Get form data
+        const to = form.querySelector('#to').value;
         const subject = form.querySelector('#subject').value;
         const message = form.querySelector('#message').value;
 
         // Data to send to the server as a JSON object
         const emailData = {
+            to: to,
             subject: subject,
             message: message,
         };
