@@ -1,34 +1,20 @@
+/* Suppressing warnings */
+process.env.NODE_NO_WARNINGS = '1';
 
 /* Imports */
 require('dotenv').config();
 const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const multer = require('multer');
-const EventEmitter = require('events');
+
+const cors = require('cors');
 const nodemailer = require('nodemailer');
 const mg = require('nodemailer-mailgun-transport');
 
-const app = express();
-const port = process.env.PORT || 3000;
+const EventEmitter = require('events');
 const eventEmitter = new EventEmitter();
-
-// // Use CORS middleware with dynamic origin
-// app.use((req, res, next) => {
-//     cors({
-//         origin: (origin, callback) => {
-//             if (!origin || origin === req.headers.origin) {
-//                 callback(null, true);
-//             } else {
-//                 callback(new Error('Not allowed by CORS'));
-//             }
-//         },
-//         methods: 'POST',
-//     })(req, res, next);
-// });
-//
-// // Middleware to parse JSON requests
-// app.use(bodyParser.json());
 
 // Middleware setup
 app.use(cors());
@@ -47,13 +33,13 @@ const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
 // Route to send email
 app.post('/send-email', async (req, res) => {
-    const { to, subject, text } = req.body;
+    const { to, subject, message } = req.body;
 
     const mailOptions = {
         from: 'Excited User <postmaster@sandbox9ab143eaa826435fb1bbc07e73fb9d7e.mailgun.org>',
-        to: 'reshma.ragh@gmail.com',
-        subject: 'Test Email',
-        text: 'Hello from Mailgun!'
+        to: to,
+        subject: subject,
+        text: message
     };
 
     try {
