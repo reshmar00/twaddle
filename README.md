@@ -61,6 +61,12 @@ Ensure you have Node.js and npm installed on your system. You can download them 
 2. Enter the recipient email ID, subject line, and email body content.
 3. Click "Send Email". You should see a browser dialog saying "Email Sent!". Verify by checking your recipient email's inbox or spam folder.
 
+#### Note on Email Functionality
+
+The email sending feature is implemented using Mailgun. Currently, this feature can only be verified by contacting the repository owner. If you need to test this functionality, please reach out to me at [reshma.ragh@gmail.com].
+
+In the future, this feature will be fully configurable through GitHub Secrets for easier setup in cloned repositories.
+
 ### Play Theme Music
 1. Navigate to the "Play the twaddle theme music" section on the right side of the page.
 2. Use the play and pause buttons to control the theme music playback.
