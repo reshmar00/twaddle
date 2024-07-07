@@ -6,7 +6,7 @@ Twaddle is a fun web app that utilizes Node.js functionality for uploading files
 
 ## Demo
 
-![Demo](./twaddle-demo.gif)
+![Demo](./twaddle/twaddle-demo.gif)
 
 ## Features
 
