@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
 const EventEmitter = require('events');
-const mailgun = require('mailgun-js');
+const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -50,15 +50,20 @@ app.post('/send-email', (req, res) => {
 
     console.log('Sending email...');
 
-    mg.messages().send(data, (error, body) => {
-        if (error) {
+    axios.post(`https://api.mailgun.net/v3/${process.env.MAILGUN_DOMAIN}/messages`, data, {
+        auth: {
+            username: 'api',
+            password: process.env.MAILGUN_API_KEY
+        }
+    })
+        .then(response => {
+            console.log('Email sent:', response.data);
+            res.status(200).json({ message: 'Email sent successfully' });
+        })
+        .catch(error => {
             console.error('Error sending email:', error);
             res.status(500).json({ error: 'Error sending email' });
-        } else {
-            console.log('Email sent:', body);
-            res.status(200).json({ message: 'Email sent successfully' });
-        }
-    });
+        });
 });
 
 /*********** Code to handle file uploads ***********/
