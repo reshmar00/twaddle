@@ -1,19 +1,15 @@
 
-
 /* Imports */
-require('dotenv').config();
+const axios = require('axios');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
 const EventEmitter = require('events');
-const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 3000;
 const eventEmitter = new EventEmitter();
-
-const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN });
 
 // Use CORS middleware with dynamic origin
 app.use((req, res, next) => {
@@ -29,10 +25,10 @@ app.use((req, res, next) => {
     })(req, res, next);
 });
 
-/********* Code to handle email sending *********/
-
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
+
+/*********** Code to handle email sending ***********/
 
 // Define a route for sending emails
 app.post('/send-email', (req, res) => {
@@ -48,7 +44,7 @@ app.post('/send-email', (req, res) => {
         html: `<h1>${message}</h1>`,
     };
 
-    console.log('Sending email...');
+    console.log('Sending email...', data);
 
     axios.post(`https://api.mailgun.net/v3/${process.env.MAILGUN_DOMAIN}/messages`, data, {
         auth: {
@@ -61,7 +57,7 @@ app.post('/send-email', (req, res) => {
             res.status(200).json({ message: 'Email sent successfully' });
         })
         .catch(error => {
-            console.error('Error sending email:', error);
+            console.error('Error sending email:', error.response.data);
             res.status(500).json({ error: 'Error sending email' });
         });
 });
