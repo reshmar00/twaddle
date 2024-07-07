@@ -1,65 +1,69 @@
 
 /* Imports */
-const axios = require('axios');
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
 const EventEmitter = require('events');
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
 
 const app = express();
 const port = process.env.PORT || 3000;
 const eventEmitter = new EventEmitter();
 
-// Use CORS middleware with dynamic origin
-app.use((req, res, next) => {
-    cors({
-        origin: (origin, callback) => {
-            if (!origin || origin === req.headers.origin) {
-                callback(null, true);
-            } else {
-                callback(new Error('Not allowed by CORS'));
-            }
-        },
-        methods: 'POST',
-    })(req, res, next);
-});
+// // Use CORS middleware with dynamic origin
+// app.use((req, res, next) => {
+//     cors({
+//         origin: (origin, callback) => {
+//             if (!origin || origin === req.headers.origin) {
+//                 callback(null, true);
+//             } else {
+//                 callback(new Error('Not allowed by CORS'));
+//             }
+//         },
+//         methods: 'POST',
+//     })(req, res, next);
+// });
+//
+// // Middleware to parse JSON requests
+// app.use(bodyParser.json());
 
-// Middleware to parse JSON requests
+// Middleware setup
+app.use(cors());
 app.use(bodyParser.json());
 
 /*********** Code to handle email sending ***********/
 
-// Define a route for sending emails
-app.post('/send-email', (req, res) => {
-    console.log('Received POST request at /send-email');
+// Configure Mailgun transport
+const auth = {
+    auth: {
+        api_key: process.env.MAILGUN_API_KEY,
+        domain: process.env.MAILGUN_DOMAIN
+    }
+};
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
-    const { to, subject, message } = req.body;
+// Route to send email
+app.post('/send-email', async (req, res) => {
+    const { to, subject, text } = req.body;
 
-    const data = {
-        from: `Excited User <mailgun@${process.env.MAILGUN_DOMAIN}>`,
-        to: to,
-        subject: subject,
-        text: message,
-        html: `<h1>${message}</h1>`,
+    const mailOptions = {
+        from: 'Excited User <postmaster@sandbox9ab143eaa826435fb1bbc07e73fb9d7e.mailgun.org>',
+        to: 'reshma.ragh@gmail.com',
+        subject: 'Test Email',
+        text: 'Hello from Mailgun!'
     };
 
-    console.log('Sending email...', data);
-
-    axios.post(`https://api.mailgun.net/v3/${process.env.MAILGUN_DOMAIN}/messages`, data, {
-        auth: {
-            username: 'api',
-            password: process.env.MAILGUN_API_KEY
-        }
-    })
-        .then(response => {
-            console.log('Email sent:', response.data);
-            res.status(200).json({ message: 'Email sent successfully' });
-        })
-        .catch(error => {
-            console.error('Error sending email:', error.response.data);
-            res.status(500).json({ error: 'Error sending email' });
-        });
+    try {
+        const info = await nodemailerMailgun.sendMail(mailOptions);
+        console.log('Email sent:', info);
+        res.status(200).json({ message: 'Email sent successfully' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Error sending email' });
+    }
 });
 
 /*********** Code to handle file uploads ***********/
